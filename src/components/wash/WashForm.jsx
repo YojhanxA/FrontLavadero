@@ -1,11 +1,18 @@
 import { useMemo, useState } from "react";
 
+function getLocalDateInputValue() {
+  const now = new Date();
+  const offset = now.getTimezoneOffset();
+  const localDate = new Date(now.getTime() - offset * 60 * 1000);
+  return localDate.toISOString().split("T")[0];
+}
+
 const initialState = {
   plate: "",
   price: "",
-  washDate: new Date().toISOString().slice(0, 10),
+  washDate: getLocalDateInputValue(),
   vehicleType: "AUTOMOVIL",
-  observations: ""
+  observations: "",
 };
 
 export default function WashForm({ onSubmit }) {
@@ -18,11 +25,19 @@ export default function WashForm({ onSubmit }) {
 
   function validate(values) {
     const nextErrors = {};
-    if (!values.plate.trim()) nextErrors.plate = "La placa es obligatoria";
+
+    if (!values.plate.trim()) {
+      nextErrors.plate = "La placa es obligatoria";
+    }
+
     if (!values.price || Number(values.price) <= 0) {
       nextErrors.price = "El precio debe ser mayor a 0";
     }
-    if (!values.washDate) nextErrors.washDate = "La fecha es obligatoria";
+
+    if (!values.washDate) {
+      nextErrors.washDate = "La fecha es obligatoria";
+    }
+
     return nextErrors;
   }
 
@@ -35,6 +50,7 @@ export default function WashForm({ onSubmit }) {
 
   async function handleSubmit(event) {
     event.preventDefault();
+
     const nextErrors = validate(form);
     setErrors(nextErrors);
     setSuccess("");
@@ -43,19 +59,23 @@ export default function WashForm({ onSubmit }) {
 
     try {
       setLoading(true);
+
       await onSubmit({
         plate: form.plate.trim().toUpperCase(),
         price: Number(form.price),
         washDate: form.washDate,
         vehicleType: form.vehicleType,
-        observations: form.observations.trim()
+        observations: form.observations.trim(),
       });
+
       setSuccess("Lavado registrado correctamente");
+
       setForm({
         ...initialState,
-        washDate: new Date().toISOString().slice(0, 10),
-        vehicleType: form.vehicleType
+        washDate: getLocalDateInputValue(),
+        vehicleType: form.vehicleType,
       });
+
       setErrors({});
     } catch (error) {
       setSuccess("");
@@ -76,7 +96,9 @@ export default function WashForm({ onSubmit }) {
             placeholder="ABC123"
             maxLength={10}
           />
-          {errors.plate ? <small className="error-text">{errors.plate}</small> : null}
+          {errors.plate ? (
+            <small className="error-text">{errors.plate}</small>
+          ) : null}
         </label>
 
         <label className="field">
@@ -89,7 +111,9 @@ export default function WashForm({ onSubmit }) {
             placeholder="25000"
             min="1"
           />
-          {errors.price ? <small className="error-text">{errors.price}</small> : null}
+          {errors.price ? (
+            <small className="error-text">{errors.price}</small>
+          ) : null}
         </label>
 
         <label className="field">
