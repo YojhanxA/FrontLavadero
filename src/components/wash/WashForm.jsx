@@ -143,7 +143,7 @@ export default function WashForm({ onSubmit }) {
             <option value="BUS">Bus</option>
             <option value="MOTO">Moto</option>
             <option value="BUS">Bus</option>
-            <option value="PARTICULAR">Particula</option>
+            <option value="PARTICULAR">Particular</option>
           </select>
         </label>
 
