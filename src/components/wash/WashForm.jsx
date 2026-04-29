@@ -136,11 +136,14 @@ export default function WashForm({ onSubmit }) {
             value={form.vehicleType}
             onChange={handleChange}
           >
-            <option value="AUTOMOVIL">Automóvil</option>
+            <option value="BOLQUETA">Bolqueta</option>
             <option value="CAMIONETA">Camioneta</option>
+            <option value="CAMION">Camion</option>
+            <option value="CARRO TANQUE">Carro Tanque</option>
+            <option value="BUS">Bus</option>
             <option value="MOTO">Moto</option>
-            <option value="TAXI">Taxi</option>
-            <option value="OTRO">Otro</option>
+            <option value="BUS">Bus</option>
+            <option value="PARTICULAR">Particula</option>
           </select>
         </label>
 
